@@ -1,0 +1,94 @@
+﻿Each package is licensed to you by its owner. NuGet is not responsible for, nor does it grant any licenses to, third-party packages. Some packages may include dependencies which are governed by additional licenses. Follow the package source (feed) URL to determine any dependencies.
+
+Package Manager Console Host Version 4.9.2.5706
+
+Type 'get-help NuGet' to see all available NuGet commands.
+
+PM> cd C:\Users\k.garapati.chaitanya\source\repos\dotnetcore-entityframework-api\Scheduler.API
+PM> Add-Migration Initial
+Startup project 'Scheduler.Model' targets framework '.NETStandard'. There is no runtime associated with this framework, and projects targeting it cannot be executed directly. To use the Entity Framework Core Package Manager Console Tools with this project, add an executable project targeting .NET Framework or .NET Core that references this project, and set it as the startup project; or, update this project to cross-target .NET Framework or .NET Core. For more information on using the EF Core Tools with .NET Standard projects, see https://go.microsoft.com/fwlink/?linkid=2034705
+PM> Add-Migration Initial
+Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 2.2.2-servicing-10034 initialized 'SchedulerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: MigrationsAssembly=Scheduler.API 
+To undo this action, use Remove-Migration.
+PM> update-database
+Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 2.2.2-servicing-10034 initialized 'SchedulerContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: MigrationsAssembly=Scheduler.API 
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (277ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      CREATE DATABASE [SchedulerDb];
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (89ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      IF SERVERPROPERTY('EngineEdition') <> 5
+      BEGIN
+          ALTER DATABASE [SchedulerDb] SET READ_COMMITTED_SNAPSHOT ON;
+      END;
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (22ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [__EFMigrationsHistory] (
+          [MigrationId] nvarchar(150) NOT NULL,
+          [ProductVersion] nvarchar(32) NOT NULL,
+          CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (85ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+Microsoft.EntityFrameworkCore.Migrations[20402]
+      Applying migration '20190221065348_Initial'.
+Applying migration '20190221065348_Initial'.
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [User] (
+          [Id] int NOT NULL IDENTITY,
+          [Name] nvarchar(100) NOT NULL,
+          [Avatar] nvarchar(max) NULL,
+          [Profession] nvarchar(max) NULL,
+          CONSTRAINT [PK_User] PRIMARY KEY ([Id])
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [Schedule] (
+          [Id] int NOT NULL IDENTITY,
+          [Title] nvarchar(max) NULL,
+          [Description] nvarchar(max) NULL,
+          [TimeStart] datetime2 NOT NULL,
+          [TimeEnd] datetime2 NOT NULL,
+          [Location] nvarchar(max) NULL,
+          [Type] int NOT NULL DEFAULT 1,
+          [Status] int NOT NULL DEFAULT 1,
+          [DateCreated] datetime2 NOT NULL DEFAULT '2019-02-21T12:23:48.7943489+05:30',
+          [DateUpdated] datetime2 NOT NULL DEFAULT '2019-02-21T12:23:48.7970785+05:30',
+          [CreatorId] int NOT NULL,
+          CONSTRAINT [PK_Schedule] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_Schedule_User_CreatorId] FOREIGN KEY ([CreatorId]) REFERENCES [User] ([Id]) ON DELETE NO ACTION
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE TABLE [Attendee] (
+          [Id] int NOT NULL IDENTITY,
+          [UserId] int NOT NULL,
+          [ScheduleId] int NOT NULL,
+          CONSTRAINT [PK_Attendee] PRIMARY KEY ([Id]),
+          CONSTRAINT [FK_Attendee_Schedule_ScheduleId] FOREIGN KEY ([ScheduleId]) REFERENCES [Schedule] ([Id]) ON DELETE NO ACTION,
+          CONSTRAINT [FK_Attendee_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [User] ([Id]) ON DELETE NO ACTION
+      );
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_Attendee_ScheduleId] ON [Attendee] ([ScheduleId]);
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_Attendee_UserId] ON [Attendee] ([UserId]);
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      CREATE INDEX [IX_Schedule_CreatorId] ON [Schedule] ([CreatorId]);
+Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (27ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+      VALUES (N'20190221065348_Initial', N'2.2.2-servicing-10034');
+Done.
+PM> 
